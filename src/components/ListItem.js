@@ -1,19 +1,17 @@
 import { click } from '@testing-library/user-event/dist/click'
-import React from 'react'
+import React, {useState} from 'react'
 
-const ListItem = ({item}) => {
-    const clickHandler = (event) =>{
-        
-        const id = event.target.closest('.list-group-item')
-    }
+const ListItem = ({item, onDeleteItem, onDoneItem,onImportantItem,}) => {
+
+  
   return (
     <li className="list-group-item">
         <span className={`todo-list-item  ${item.done ? 'done' : ''}  ${item.important ? 'important': '' }`}>
-            <span className="todo-list-item-label">{item.title}</span>
-            <button onClick={clickHandler} type="button" className="btn btn-outline-success btn-sm float-end">
+            <span onClick={()=>onDoneItem(item.id)} className="todo-list-item-label">{item.title}</span>
+            <button onClick={()=>onImportantItem(item.id)} type="button" className="btn btn-outline-success btn-sm float-end">
                         ❕
             </button>
-            <button type="button" className="btn btn-outline-danger btn-sm float-end">
+            <button onClick={()=> onDeleteItem(item.id)} type="button" className="btn btn-outline-danger btn-sm float-end">
                         🗑
             </button>
         </span>

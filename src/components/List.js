@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ListItem from './ListItem'
 
-const List = () => {
+const List = ({getTasks}) => {
 
     const initialData = [
         {id:1, title: 'To drink coffee', done: true, important: true},
@@ -17,36 +17,44 @@ const List = () => {
     }
 
     const importantkHandler=(id)=>{
-        const ind = tasks.findIndex( item =>{
-            return item.id == id
-        })
-        let newTasks = [...tasks]
-        newTasks[ind].important = !newTasks[ind].important
-        setTasks(newTasks)
-    }
+           const ind = tasks.findIndex( item =>{
+               return item.id == id
+           })
+           let newTasks = [...tasks]
+           newTasks[ind].important = !newTasks[ind].important
+           setTasks(newTasks)
+       }
+       const doneHandler = (id)=>{
+           const ind = tasks.findIndex( item =>{
+               return item.id == id
+           })
+           let newTasks = [...tasks]
+           newTasks[ind].done = !newTasks[ind].done
+           setTasks(newTasks)
 
-    const doneHandler = (id)=>{
-        const ind = tasks.findIndex( item =>{
-            return item.id == id
-        })
-        let newTasks = [...tasks]
-        newTasks[ind].done = !newTasks[ind].done
-        setTasks(newTasks)
-    }
+           getTasks(tasks)
+       }
 
+       const deleteItemHandler = (id)=>{
+            const ind = tasks.findIndex( item =>{
+               return item.id == id
+           })
+
+           let newTasks = [...tasks];
+           newTasks.splice(ind,1);
+           setTasks(newTasks);
+       }
     const map = tasks.map((item) =>(
-         <li className="list-group-item">
-        <span className={`todo-list-item  ${item.done ? 'done' : ''}  ${item.important ? 'important': '' }`}>
-            <span onClick={()=>doneHandler(item.id)} className="todo-list-item-label">{item.title}</span>
-            <button onClick={()=>importantkHandler(item.id)} type="button" className="btn btn-outline-success btn-sm float-end">
-                        ❕
-            </button>
-            <button  type="button" className="btn btn-outline-danger btn-sm float-end">
-                        🗑
-            </button>
-        </span>
-    </li>
-        // <ListItem key={item.id} item={item}/>
+
+        <ListItem 
+        key={item.id}
+        item={item}
+        initialData={initialData}
+        onImportantItem = {importantkHandler}
+        onDoneItem ={doneHandler}
+        onDeleteItem ={deleteItemHandler}
+        // onDeleteItem ={{id} => deleteItemHandler()} второй вариант
+        />
     ))
 
     return (
